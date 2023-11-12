@@ -59,7 +59,7 @@ python manage.py startapp test_html
 
 #檢視 commit log
 -git log
--git log --oneline
+-git log --oneline(只顯示一行的指令)
 
 #綁定遠端倉庫
 -git remote add origin https://github.com/peiyi523/linebot2.git
@@ -87,3 +87,8 @@ python manage.py migrate
 -python manage.py migrate
 
 - git push
+
+#關閉電腦前把專案推到 github 的三動作
+1.git add .
+2.git commit -m "異動了什麼"
+3.git push(如果推不上去用 git push-f)
