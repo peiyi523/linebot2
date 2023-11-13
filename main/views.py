@@ -16,6 +16,28 @@ line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parse = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
 
+@csrf_exempt
+def callback(request):
+    if request.method == "POST":
+        signature = request.META["HTTP_X_LINE_SIGNATURE"]
+        body = request.body.decode("utf-8")
+        try:
+            events = parse.parse(body, signature)
+        except InvalidSignatureError:
+            return HttpResponseForbidden()
+        except LineBotApiError:
+            return HttpResponseBadRequest()
+        for event in events:
+            if isinstance(event, MessageEvent):
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(text=event.message.text),
+                )
+        return HttpResponse()
+    else:
+        return HttpResponseBadRequest()
+
+
 # Create your views here.
 def index(request):
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

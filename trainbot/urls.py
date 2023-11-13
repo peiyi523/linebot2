@@ -14,10 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.urls import re_path as url
 from django.urls import path
 from main import views
 
 urlpatterns = [
+    url("^callback", views.callback),
     path("admin/", admin.site.urls),
     # 書籍頁面
     path("books/", views.get_books),
