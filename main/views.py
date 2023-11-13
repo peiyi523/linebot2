@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 from linebot import LineBotApi, WebhookHandler, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
-from linebot.models import MessageEvent, TextSendMessage
+from linebot.models import MessageEvent, TextSendMessage, ImageSendMessage
 
 
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
@@ -29,9 +29,25 @@ def callback(request):
             return HttpResponseBadRequest()
         for event in events:
             if isinstance(event, MessageEvent):
+                message = event.message.text
+                message_object = None
+
+                if message == "你好":
+                    message_object = TextSendMessage(text="peiyi妳好!")
+                elif "樂透" in message:
+                    reply_message = "預測號碼為:\n" + get_lottory_number()
+                    message_object = TextSendMessage(text=reply_message)
+                elif "捷運" in message:
+                    image_url = "https://assets.piliapp.com/s3pxy/mrt_taiwan/taipei/20190910_zh.png"
+                    message_object = ImageSendMessage(
+                        original_content_url=image_url, preview_image_url=image_url
+                    )
+                else:
+                    message_object = TextSendMessage(text="我不懂你的意思!")
+
                 line_bot_api.reply_message(
                     event.reply_token,
-                    TextSendMessage(text=event.message.text),
+                    message_object,
                 )
         return HttpResponse()
     else:
@@ -55,6 +71,13 @@ def get_lottory2(request):
     x = random.randint(1, 50)
     numbers_str = " ".join(map(str, numbers))
     return render(request, "lottory.html", {"numbers": numbers_str, "x": x})
+
+
+def get_lottory_number():
+    numbers = sorted(random.sample(range(1, 50), 6))
+    x = random.randint(1, 50)
+    numbers_str = " ".join(map(str, numbers)) + f" 特別號:{x}"
+    return numbers_str
 
 
 def get_lottory(request):
