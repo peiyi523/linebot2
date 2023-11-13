@@ -38,7 +38,13 @@ def callback(request):
                     reply_message = "預測號碼為:\n" + get_lottory_number()
                     message_object = TextSendMessage(text=reply_message)
                 elif "捷運" in message:
-                    image_url = "https://assets.piliapp.com/s3pxy/mrt_taiwan/taipei/20190910_zh.png"
+                    if "台中" in message:
+                        image_url = "https://th.bing.com/th/id/OIP.qu5O4ncJrFeEV4I0rn60DQHaHa?pid=ImgDet&rs=1"
+                    elif "高雄" in message:
+                        image_url = "https://upload.wikimedia.org/wikipedia/commons/3/33/%E9%AB%98%E9%9B%84%E6%8D%B7%E9%81%8B%E8%B7%AF%E7%B6%B2%E5%9C%96_(C1-C14%E7%AB%99%E5%90%8D%E7%A2%BA%E5%AE%9A%E7%89%88).png"
+                    else:
+                        image_url = "https://assets.piliapp.com/s3pxy/mrt_taiwan/taipei/20190910_zh.png"
+
                     message_object = ImageSendMessage(
                         original_content_url=image_url, preview_image_url=image_url
                     )
