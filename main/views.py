@@ -10,14 +10,17 @@ from django.views.decorators.csrf import csrf_exempt
 from linebot import LineBotApi, WebhookHandler, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage, ImageSendMessage
-
+from invoice import get_invoice_numbers, search_invoice_bingo
 
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parse = WebhookParser(settings.LINE_CHANNEL_SECRET)
 
+start_invoice = False
+
 
 @csrf_exempt
 def callback(request):
+    global start_invoice
     if request.method == "POST":
         signature = request.META["HTTP_X_LINE_SIGNATURE"]
         body = request.body.decode("utf-8")
@@ -31,8 +34,18 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 message = event.message.text
                 message_object = None
+                if start_invoice:
+                    message_text = "進入對獎模式"
+                    message_object = TextSendMessage(text=message_text)
 
-                if message == "你好":
+                elif message == "1":
+                    numbers = get_invoice_numbers()
+                    message_text = "7-8月最新發票開獎號碼\n" + "\n".join(numbers)
+                    message_text += "\n請開始輸入號碼:"
+                    message_object = TextSendMessage(text=message_text)
+                    start_invoice = True
+
+                elif message == "你好":
                     message_object = TextSendMessage(text="peiyi妳好!")
                 elif "樂透" in message:
                     reply_message = "預測號碼為:\n" + get_lottory_number()
