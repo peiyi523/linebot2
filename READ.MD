@@ -88,6 +88,10 @@ python manage.py migrate
 
 - git push
 
+# 啟動指令
+
+- gunicorn trainapp.wsgi
+
 #關閉電腦前把專案推到 github 的三動作
 1.git add .
 2.git commit -m "異動了什麼"

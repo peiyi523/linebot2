@@ -38,7 +38,7 @@ def callback(request):
                 if start_invoice:
                     if message == "0":
                         start_invoice = False
-                        message_text = "離開對獎模式"
+                        message_text = "離開發票對獎模式"
                     else:
                         message_text = search_invoice_bingo(message, numbers)
                         message_text += "\n==>請輸入下一組號碼(0:exit)"
