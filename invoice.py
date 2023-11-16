@@ -33,7 +33,7 @@ def search_invoice_bingo(invoice_number, numbers):
             message = "有機會中特別獎200萬(八個號碼)"
 
         else:
-            message = "恭喜中頭獎,有機會中20萬(三個號碼中200)"
+            message = "有機會中20萬(三個號碼中200)"
         message += f"\n請繼續對其他號碼==>{numbers[i]}"
     else:
         message = "@@沒有中獎~~"
