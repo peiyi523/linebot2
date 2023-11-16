@@ -11,7 +11,7 @@ from linebot import LineBotApi, WebhookHandler, WebhookParser
 from linebot.exceptions import InvalidSignatureError, LineBotApiError
 from linebot.models import MessageEvent, TextSendMessage, ImageSendMessage
 
-from crawel.invoice import get_invoice_numbers, search_invoice_bingo
+from invoice import get_invoice_numbers, search_invoice_bingo
 
 line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
 parse = WebhookParser(settings.LINE_CHANNEL_SECRET)
