@@ -34,14 +34,20 @@ def callback(request):
             if isinstance(event, MessageEvent):
                 message = event.message.text
                 message_object = None
+                # 判斷是否進行對獎模式:
                 if start_invoice:
-                    message_text = "進入對獎模式"
+                    if message == "0":
+                        start_invoice = False
+                        message_text = "離開對獎模式"
+                    else:
+                        message_text = search_invoice_bingo(message, numbers)
+                        message_text += "\n==>請輸入下一組號碼(0:exit)"
                     message_object = TextSendMessage(text=message_text)
 
-                elif message == "1":
+                elif message == "發票":
                     numbers = get_invoice_numbers()
-                    message_text = "7-8月最新發票開獎號碼\n" + "\n".join(numbers)
-                    message_text += "\n請開始輸入號碼:"
+                    message_text = "進入發票對獎模式==>\n本期最新發票對獎號碼:" + ",".join(numbers)
+                    message_text += "\n請開始輸入您的發票號碼(後三碼):"
                     message_object = TextSendMessage(text=message_text)
                     start_invoice = True
 
