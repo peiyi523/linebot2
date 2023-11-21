@@ -51,7 +51,7 @@ def callback(request):
                     message_object = TextSendMessage(text=message_text)
                     start_invoice = True
                 elif message == "你好":
-                    message_object = TextSendMessage(text="jerry你好!")
+                    message_object = TextSendMessage(text="peiyi你好!")
                 elif "樂透" in message:
                     reply_message = "預測號碼為:\n" + get_lottory_number()
                     message_object = TextSendMessage(text=reply_message)
