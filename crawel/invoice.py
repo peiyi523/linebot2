@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 
 def get_invoice_numbers():
+    numbers = []
     try:
         url = "https://www.etax.nat.gov.tw/etw-main/ETW183W2_11207/"
         resp = requests.get(url)
